@@ -4,7 +4,7 @@ import Image from "next/image";
 
 type Props = {
     title: string;
-    id: string;
+    id: number;
     imageSrc: string;
     onclick: (id: number) => void;
     disabled?: boolean;
