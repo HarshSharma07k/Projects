@@ -5,20 +5,19 @@ import { getCourseById, getUserProgress } from "@/db/queries";
 import { userProgress } from "@/db/schema";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 export const upsertUserProgress = async (courseId: number) => {
     const { userId } = await auth();
     const user = await currentUser();
 
     if (!userId || !user) {
-        throw new Error("Unauthorized");
+        return { error: "Unauthorized" };
     }
 
     const course = await getCourseById(courseId);
 
     if (!course) {
-        throw new Error("Course not found");
+        return { error: "Course not found" };
     }
 
     // if (!course.units.length || !course.units[0].lessons.length) {
@@ -36,7 +35,7 @@ export const upsertUserProgress = async (courseId: number) => {
 
         revalidatePath("/course");
         revalidatePath("/learn");
-        redirect("/learn");
+        return { redirect: "/learn" };
     }
 
     await db.insert(userProgress).values({
@@ -44,9 +43,9 @@ export const upsertUserProgress = async (courseId: number) => {
         activeCourseId: courseId,
         userName: user.firstName || "User",
         imageSrc: user.imageUrl || "/mascot.svg"
-    })
+    });
 
     revalidatePath("/course");
     revalidatePath("/learn");
-    redirect("/learn");
-}
+    return { redirect: "/learn" };
+};

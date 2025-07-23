@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { ClerkProvider } from "@clerk/nextjs";
+import { ExitModal } from "@/components/exit-modal";
 
 const font = Nunito({
   variable: "--font-nunito",
@@ -16,7 +18,6 @@ export const metadata: Metadata = {
   },
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,12 +25,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${font.variable} ${font.variable} antialiased`}
-      >
-        <Toaster />
-        {children}
-      </body>
+      <ClerkProvider>
+        <body
+          className={`${font.variable} ${font.variable} antialiased`}
+        >
+          <Toaster />
+          <ExitModal />
+          {children}
+        </body>
+      </ClerkProvider>
     </html>
   );
 }

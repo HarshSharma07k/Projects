@@ -27,8 +27,19 @@ export const List = ({courses, activeCourseId}: Props) => {
 
         startTransition(() => {
             upsertUserProgress(id)
-            .catch(() => toast.error("Someting went wrong."));
-        })
+            .then((res) => {
+                if (res?.redirect) {
+                    router.push(res.redirect);
+                } else if (res?.error) {
+                    toast.error(res.error);
+                }
+            })
+            .catch((error) => {
+                console.error("Unexpected error:", error);
+                toast.error("Something went wrong.");
+            });
+        });
+
     }
     return (
         <div className="pt-6 grid grid-cols-1 lg:grid-cols-[repeat(auto-fill,minmax(210px,1fr))] gap-4">
