@@ -27,11 +27,9 @@ export const List = ({courses, activeCourseId}: Props) => {
 
         startTransition(() => {
             upsertUserProgress(id)
-            .then((res) => {
-                if (res?.redirect) {
-                    router.push(res.redirect);
-                } else if (res?.error) {
-                    toast.error(res.error);
+            .then((response) => {
+                if (response?.redirect) {
+                    router.push(response.redirect);
                 }
             })
             .catch((error) => {

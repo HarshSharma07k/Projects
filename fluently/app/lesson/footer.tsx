@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { CheckCircle, XCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useKey, useMedia } from "react-use";
 
 type Props = {
     disabled?: boolean;
     status: "correct" | "wrong" | "none" | "completed";
     onCheck: () => void;
-    lessonId?: boolean;
+    lessonId?: number;
 };
 
 export const Footer = ({
@@ -16,7 +17,8 @@ export const Footer = ({
     onCheck,
     lessonId
 }: Props) => {
-    const isMobile = useMedia("(max-width: 1024px)");
+    const isMobile = useMedia("(max-width: 1024px)", false);
+    const router = useRouter();
 
     useKey("Enter", onCheck, {}, [onCheck]);
     return (
