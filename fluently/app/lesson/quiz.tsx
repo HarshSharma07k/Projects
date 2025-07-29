@@ -9,12 +9,14 @@ import { Footer } from "./footer";
 import { upsertChallengeProgress } from "../actions/challenge-progress";
 import { toast } from "sonner";
 import { reduceHearts } from "../actions/user-progress";
-import { useAudio } from "react-use";
+import { useAudio, useMount } from "react-use";
 import Image from "next/image";
 import { ResultCard } from "./result-card";
 import { useRouter } from "next/navigation";
 import { ConfettiClient } from "./confetti-client";
 import { FinishAudio } from "./finish-audio";
+import { useHeartsModal } from "@/store/use-hearts-modal";
+import { usePracticeModal } from "@/store/use-practice-modal";
 
 type Props = {
     initialLessonId: number;
@@ -60,6 +62,15 @@ export const Quiz = ({
         return unCompletedIndex === -1 ? 0 : unCompletedIndex;
     });
 
+    const { open: openHeartsModal } = useHeartsModal();
+    const { open: openPracticeModal } = usePracticeModal();
+
+    useMount(() => {
+        if (initialPercentage === 100) {
+            openPracticeModal();
+        }
+    });
+
     const challenge = challenges[activeIndex];
     const options = challenge?.challengeOptions ?? [];
 
@@ -103,7 +114,7 @@ export const Quiz = ({
                 .then((response) => {
 
                     if (response?.error === "hearts") {
-                        console.error("Missing hearts");
+                        openHeartsModal();
                         return;
                     }
 
@@ -126,7 +137,7 @@ export const Quiz = ({
                 reduceHearts(challenge.id)
                 .then((response) => {
                     if (response?.error === "hearts") {
-                        console.error("Missing hearts");
+                        openHeartsModal();
                         return;
                     }
 

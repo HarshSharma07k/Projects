@@ -1,16 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Confetti from 'react-confetti';
-import { useWindowSize } from 'react-use';
+import { useMount, useWindowSize } from 'react-use';
 
 export const ConfettiClient = () => {
   const { width, height } = useWindowSize();
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
+  useMount(() => {
     setMounted(true);
-  }, []);
+  });
 
   if (
     !mounted ||

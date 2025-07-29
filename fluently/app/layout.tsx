@@ -3,7 +3,9 @@ import { Nunito } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ClerkProvider } from "@clerk/nextjs";
-import { ExitModal } from "@/components/exit-modal";
+import { ExitModal } from "@/components/modals/exit-modal";
+import { HeartsModal } from "@/components/modals/hearts-modal";
+import { PracticeModal } from "@/components/modals/practice-modal";
 
 const font = Nunito({
   variable: "--font-nunito",
@@ -31,6 +33,8 @@ export default function RootLayout({
         >
           <Toaster />
           <ExitModal />
+          <HeartsModal />
+          <PracticeModal />
           {children}
         </body>
       </ClerkProvider>
